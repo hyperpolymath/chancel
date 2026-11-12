@@ -58,6 +58,15 @@ grep -qF 'run-all.sh' "$LANE_CALLS" || fail 'subject failure stopped subsequent 
 grep -qF 'SUBJECT FAILURE' "$work/err" || fail 'nonzero lane did not become subject failure'
 SETUP_GATE=check-required-contexts.sh FAIL_GATE=check-root-shape.sh run 2 "$runner"
 grep -qF 'SETUP/INERT FAILURE (1 setup, 1 subject)' "$work/err" || fail 'setup failure must take precedence'
+# No Zig FFI seam: not applicable, visibly, and neither a pass nor a failure; even
+# --require-zig has no seam to require a compiler for.
+grep -qF 'not applicable: no Zig FFI seam in this repository' "$work/out" || fail 'absent seam was not reported as not applicable'
+! grep -qF 'PASS (0): Zig' "$work/out" || fail 'absent seam was counted as a passing lane'
+run 0 "$runner" --require-zig
+grep -qF 'not applicable: no Zig FFI seam in this repository' "$work/out" || fail '--require-zig hid the not-applicable report'
+echo 'PASS: an absent Zig FFI seam is reported not applicable, not as a pass'
+# With the seam present and no compiler, --require-zig still fails closed.
+mkdir -p "$work/tree/src/interface/ffi"
 run 2 "$runner" --require-zig
 grep -qF 'zig compiler required' "$work/err" || fail 'missing required compiler was silently skipped'
 run 2 "$runner" --report

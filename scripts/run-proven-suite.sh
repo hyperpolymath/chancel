@@ -191,7 +191,14 @@ run_zig_ffi_tests() {
   (cd "$work/ffi" && zig build test)
 }
 
-if command -v zig >/dev/null 2>&1; then
+# A repository minted without the Zig FFI seam (src/interface/ffi, e.g. the rust-cli
+# archetype) has nothing to test. That is reported as NOT APPLICABLE: it is not a
+# pass (no lane ran, no PASS line), not a failure, and not a setup error, and it
+# holds even under --require-zig because there is no seam to require a compiler
+# for. The lane returns the moment the directory exists.
+if [ ! -d src/interface/ffi ]; then
+  printf '==> [proven-suite] Zig FFI unit tests: not applicable: no Zig FFI seam in this repository (src/interface/ffi is absent)\n'
+elif command -v zig >/dev/null 2>&1; then
   run_lane "Zig FFI ABI layout & memory-leak unit tests" run_zig_ffi_tests
 elif [ "$REQUIRE_ZIG" -eq 1 ]; then
   printf '    INERT/SETUP (2): zig compiler required (--require-zig) but missing on PATH\n' >&2
