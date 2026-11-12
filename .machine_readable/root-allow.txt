@@ -39,7 +39,7 @@ LICENSE.adoc               # the licence (MPL-2.0); renamed from LICENSE to the 
 LICENSES/                  # REUSE licence texts, dual-licence model (code MPL-2.0 / docs CC-BY-SA-4.0)
 CHANGELOG.adoc             # AsciiDoc is the estate-standard documentation format
 CITATION.cff               # citation metadata; GitHub reads it from the root of the default branch only
-rsr-template-repo_chora.deed # the repo deed: universal AI entry point; family-7 allocation manifest + ply tree folded in (standards#837 pilot). Filename carries the repo slug (deed dispatch <stem>_chora.deed), so repo-init renames it at mint
+chancel_chora.deed # the repo deed: universal AI entry point; family-7 allocation manifest + ply tree folded in (standards#837 pilot). Filename carries the repo slug (deed dispatch <stem>_chora.deed), so repo-init renames it at mint
 CLAUDE.md                  # generated arrival pack; the generator, pre-commit and Claude Code all read it from the ROOT (do not hand-edit; edit the repo deed)
 ?GEMINI.md                # pointer to CLAUDE.md for repos without AGENTS.md yet
 Justfile                   # thin; delegates phases to build/just/*.just
@@ -56,8 +56,10 @@ coordination.k9.ncl        # repo-local session binding (template-mandated)
 .gitmessage             # git commit template; wired by .github/hooks/install.sh (git config commit.template)
 .mailmap                   # git reads .mailmap from the worktree root only
 mise.toml                  # the toolchain: every tool at "latest" (PROVISIONING-STANDARD §4)
-mise.lock                  # makes "latest" concrete: version + per-platform checksum; mise reads it beside mise.toml
+?mise.lock                 # OPTIONAL here, cause: the rust-cli mint deleted the template's lock because it pinned another toolchain (scripts/render-mise.sh); a correct lock needs mise to resolve and checksum the rust toolchain, and mise is not installed where this was minted. Regenerate with `just toolchain-refresh`, then promote this entry back to required (drop the ?). Same fix needed at source: the mint should leave this entry optional, or regenerate the lock
 .hypatia-ignore            # the Hypatia scanner reads it from the repo root
+Cargo.toml                 # rust-cli archetype: Cargo reads the package manifest from the package root only; this repo is a Rust crate (src/, tests/cli.rs)
+Cargo.lock                 # committed lockfile for a binary crate; rust-ci.yml runs cargo clippy/check/test with --locked, which fails without it
 ?.coderabbit.yaml          # CodeRabbit reads its config from the root only; pins Docstring Coverage to mode: warning (estate decision, not a vendor default). Optional: only the template and the repos whose rulesets require the CodeRabbit context carry it
 .clinerules                # AI editor rules. Cline reads them from the project ROOT, so the copies formerly under .machine_readable/ai/ were inert (.cursorrules and .windsurfrules were retired 2026-10-26)
 ?.claude/                  # Claude Code project state (checkpoints, history) — created by the tool itself

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: CC-BY-SA-4.0
 // Copyright (c) Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 // SPDX-FileCopyrightText: 2024-2026 Jonathan D.A. Jewell (hyperpolymath)
-= {{PROJECT_NAME}}
+= Chancel
 :toc:
 :toc-placement: preamble
 
@@ -12,138 +12,49 @@ image:https://img.shields.io/badge/Provenance-Quantum--Safe-blueviolet[Quantum-S
 
 // ── Standard & quality gates ────────────────────────────────────────────────
 image:https://img.shields.io/badge/RSR-Rhodium_Standard-9C27B0[Rhodium Standard Repository,link="https://github.com/hyperpolymath/rhodium-standard-repositories"]
-image:https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{{OWNER}}/{{REPO}}/governance-badges/badges/k9.json[K9 conformance,link="https://github.com/{{OWNER}}/{{REPO}}/actions/workflows/dogfood-gate.yml"]
-image:https://www.bestpractices.dev/projects/{{OPENSSF_BP_ID}}/badge[OpenSSF Best Practices,link="https://www.bestpractices.dev/projects/{{OPENSSF_BP_ID}}"]
-image:https://api.scorecard.dev/projects/github.com/{{OWNER}}/{{REPO}}/badge[OpenSSF Scorecard,link="https://scorecard.dev/viewer/?uri=github.com/{{OWNER}}/{{REPO}}"]
-image:https://sonarcloud.io/api/project_badges/measure?project={{OWNER}}_{{REPO}}&metric=alert_status[SonarQube Quality Gate,link="https://sonarcloud.io/summary/new_code?id={{OWNER}}_{{REPO}}"]
-image:https://archive.softwareheritage.org/badge/origin/https://{{FORGE}}/{{OWNER}}/{{REPO}}/[Archived in Software Heritage,link="https://archive.softwareheritage.org/browse/origin/?origin_url=https://{{FORGE}}/{{OWNER}}/{{REPO}}"]
+image:https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/hyperpolymath/chancel/governance-badges/badges/k9.json[K9 conformance,link="https://github.com/hyperpolymath/chancel/actions/workflows/dogfood-gate.yml"]
+image:https://api.scorecard.dev/projects/github.com/hyperpolymath/chancel/badge[OpenSSF Scorecard,link="https://scorecard.dev/viewer/?uri=github.com/hyperpolymath/chancel"]
+image:https://sonarcloud.io/api/project_badges/measure?project=hyperpolymath_chancel&metric=alert_status[SonarQube Quality Gate,link="https://sonarcloud.io/summary/new_code?id=hyperpolymath_chancel"]
+image:https://archive.softwareheritage.org/badge/origin/https://github.com/hyperpolymath/chancel/[Archived in Software Heritage,link="https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/hyperpolymath/chancel"]
 
 // ── Provenance & ecosystem ──────────────────────────────────────────────────
-image:https://img.shields.io/badge/Idris-Inside-5E5086?logo=idris&logoColor=white[Idris Inside,link="https://github.com/hyperpolymath/proven"]
-image:https://img.shields.io/badge/Zig-Zero--overhead-F7A41D?logo=zig&logoColor=black[Zig Zero-overhead FFI,link="https://github.com/hyperpolymath/typed-wasm"]
-image:https://api.thegreenwebfoundation.org/greencheckimage/{{FORGE}}[Green Web,link="https://www.thegreenwebfoundation.org/green-web-check/?url={{FORGE}}"]
+image:https://api.thegreenwebfoundation.org/greencheckimage/github.com[Green Web,link="https://www.thegreenwebfoundation.org/green-web-check/?url=github.com"]
 
-{{PROJECT_DESCRIPTION}}
+Planned verifier for Chapel programs: a subset gate and a proof-obligation front end over the Canonry theory. No code yet.
 
-[IMPORTANT]
-====
-*This file is a template.* You are reading `README.adoc` from the *RSR template repo*
-(or a freshly-cloned copy of it). Run `just repo-init` to replace every `{{PLACEHOLDER}}`
-token with your project's details, then delete this admonition. Until you do, the
-`{{...}}` markers below are intentional placeholders, not content.
-====
+== Status
 
-== What this is
+Chancel has *no code yet*. This repository currently holds only the scaffolding
+it was minted with from the RSR template (`rust-cli` archetype): a placeholder
+crate whose single function reports the package name and version, its tests,
+CI workflows, and the machine-readable repository metadata. Nothing here yet
+checks a Chapel program, gates a Chapel subset, or emits a proof obligation.
 
-A new repository scaffolded from the *Rhodium Standard Repository (RSR)* template:
-a batteries-included starting point that ships with CI/CD, machine-readable project
-metadata, an AI-agent gatekeeper protocol, a formally-typed ABI/FFI seam
-(Idris2 + Zig), container and reproducible-build scaffolding, and governance
-infrastructure — all wired and passing the RSR validators on day one.
+What is planned, and not yet built: a subset gate for Chapel programs and a
+proof-obligation front end over the Canonry theory. The repository deed
+(`chancel_chora.deed`) is the place where its identity, boundaries and
+relationships are recorded; some of its fields are not yet filled in and wait
+for the owner.
 
-Replace this section with a description of *your* project once initialised.
-
-== Quick start
+== Working in this repository
 
 [source,bash]
 ----
-# 1. Create a repo from this template (or clone it), then from the repo root:
-mise trust                    # allow this repository's mise.toml (needed without a TTY)
-mise install                  # the toolchain, including the yq repo-init needs
-mise exec -- just repo-init   # interactive bootstrap: fills every {{PLACEHOLDER}}
-
-# 2. See the available tasks:
-mise exec -- just             # lists all phases (build, test, validate, audit, ...)
-
-# 3. Check the repo still satisfies the RSR shape:
-mise exec -- just validate    # structure + metadata checks
+mise trust && mise install    # the toolchain pinned in mise.toml
+mise exec -- just             # lists the phases (build, test, validate, audit, ...)
+mise exec -- just validate    # structure and metadata checks
+cargo test --locked           # the placeholder crate's tests
 ----
 
 `mise exec --` puts the toolchain on `PATH` for that one command. Once mise is
-activated in your shell (`eval "$(mise activate bash)"`, or your shell's
-equivalent), plain `just` works and the prefix can be dropped.
+activated in your shell, plain `just` works.
 
-`just repo-init` prompts for the project name, owner, author, licence contact, and the
-other values listed in `.machine_readable/ai/PLACEHOLDERS.adoc`, substitutes them
-across the tree, validates the result, and (if available) runs the `k9-svc` checks.
-
-[[ai-install]]
-== AI-Assisted Installation (Recommended)
-
-=== Just say it
-
-Say this to any AI assistant that can read a URL and run commands (or give you
-commands to paste):
-
-[source,text]
-----
-Create a new repository from https://github.com/hyperpolymath/rsr-template-repo
-----
-
-The URL is the key: it leads the assistant to
-link:docs/AI_INSTALLATION_GUIDE.adoc[`docs/AI_INSTALLATION_GUIDE.adoc`], the
-complete step-by-step recipe. The assistant checks your system, installs the
-prerequisites, instantiates the template with `just repo-init`, and verifies the
-result with `just doctor`.
-
-* "Set up rsr-template-repo so I can work on the template itself — https://github.com/hyperpolymath/rsr-template-repo"
-* `./launcher.sh --ai-setup` (or `just ai-setup`) prints the line and the guide path.
-
-=== What you will be asked
-
-. Your operating system (Linux, macOS, or Windows via WSL2).
-. The new project's name, owner, author and licence contact (the values listed in
-  `.machine_readable/ai/PLACEHOLDERS.adoc`).
-. To confirm the privacy notice below.
-
-=== Privacy and security
-
-[IMPORTANT]
-====
-Setting up rsr-template-repo clones this repository and installs its developer
-tools per-user with mise (no administrator rights, nothing sent anywhere).
-`just repo-init` rewrites files only inside the new checkout; it creates no
-remote repository and pushes nothing until you do.
-====
-
-=== Minting without a terminal
-
-Agents and CI can mint non-interactively: set `RSR_NON_INTERACTIVE=1` and pass
-the answers as environment variables named like the prompts' variables in
-`build/just/repo-init.just` (`PROJECT_NAME`, `REPO`, `OWNER`, `AUTHOR` and
-`AUTHOR_EMAIL` are required; any other answer left unset is blank or takes its
-default). Piping the answers to stdin in prompt order also works.
-
-=== Troubleshooting
-
-Run `just doctor`; each FAIL carries a code explained in
-link:docs/SETUP.adoc#troubleshooting[`docs/SETUP.adoc` §Troubleshooting], and
-`just heal` applies the automatic fixes. Prefer to do it yourself? The full
-manual route is link:docs/SETUP.adoc[`docs/SETUP.adoc`]; developers and
-maintainers can brief an AI with `just ai-warmup dev` / `just ai-warmup maintainer`.
-
-== What you get
-
-* *Machine-readable metadata* (`.machine_readable/descriptiles/`) — `STATE`, `META`,
-  `ECOSYSTEM`, `PLAYBOOK`, `AGENTIC`, `NEUROSYM`, `CLADE`, and `anchors/ANCHOR`,
-  in deed, so tools and agents can read the project's state and boundaries.
-* *AI gatekeeper protocol* — `rsr-template-repo_chora.deed` (the repo deed) is the
-  universal entry point that tells an AI agent how to work in this repo before it
-  touches anything; it carries the AI allocation policy and the ply directory tree.
-* *Typed ABI/FFI seam* — `src/interface/Abi/` (Idris2 type + layout proofs) over
-  `src/interface/ffi/` (Zig implementation), with generated C headers.
-* *CI/CD* — GitHub Actions for quality, security (CodeQL, Scorecard, secret
-  scanning), multi-forge mirroring, and RSR anti-pattern enforcement.
-* *Supply-chain & reproducibility* — container layering (stapeln), Guix shells,
-  SBOM, and signing hooks.
-* *Governance* — `GOVERNANCE.adoc`, `MAINTAINERS.adoc`, `.github/` community health
-  files, and a release `AUDIT.adoc` gate.
+Run `just doctor` if something is missing; each failure carries a code explained
+in link:docs/SETUP.adoc#troubleshooting[`docs/SETUP.adoc`].
 
 == Governance badges
 
-The *K9 conformance* badge in the row at the top becomes live after
-`just repo-init` replaces the `{{OWNER}}` and `{{REPO}}` placeholders in its URL
-and an eligible push to `main` publishes it. It is published by
+The *K9 conformance* badge in the row at the top is published after an eligible push to `main`, by
 `.github/workflows/dogfood-gate.yml` to a generated *orphan* branch called
 `governance-badges`, and read back through the shields endpoint.
 
@@ -200,8 +111,7 @@ The short version:
 * link:docs/EXPLAINME.adoc[EXPLAINME] — the engineering deep-dive: how the pieces actually work.
 * link:docs/AFFIRMATION.adoc[AFFIRMATION] — the dated, signed honesty snapshot of the repo's true state.
 * link:docs/AUDIT.adoc[AUDIT] — the release audit gate.
-* link:docs/AI_INSTALLATION_GUIDE.adoc[AI installation guide] — for agents instantiating this template.
-* link:.machine_readable/ai/PLACEHOLDERS.adoc[PLACEHOLDERS] — the full placeholder reference.
+
 
 == Licence
 

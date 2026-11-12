@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MPL-2.0
-# SPDX-FileCopyrightText: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+# SPDX-FileCopyrightText: 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 #
-# minted by: just repo-init rust-cli ({{CURRENT_YEAR}})
+# minted by: just repo-init rust-cli (2026)
 #
 # The package name is the repository slug; the CRATE name (what `use` sees) is
 # its underscored form, which is the token used in src/*.rs and tests/*.rs.
@@ -9,14 +9,14 @@
 # `just build` and `just test` run (provision-lib.sh lang_cmd rust:*).
 
 [package]
-name = "{{REPO}}"
+name = "chancel"
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.80"
 license = "MPL-2.0"
-description = "{{PROJECT_DESCRIPTION}}"
-authors = ["{{AUTHOR}} <{{AUTHOR_EMAIL}}>"]
-repository = "https://{{FORGE}}/{{OWNER}}/{{REPO}}"
+description = "Planned verifier for Chapel programs: a subset gate and a proof-obligation front end over the Canonry theory. No code yet."
+authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
+repository = "https://github.com/hyperpolymath/chancel"
 readme = "README.adoc"
 
 [dependencies]
