@@ -101,9 +101,13 @@ predecessors did.
 | optional
 | estate docs gate (standards scripts/check-docs-presence.sh) requires CONTRIBUTING at the ROOT; this is the copy it verifies
 
+| `Cargo.lock`
+| yes
+| committed lockfile for a binary crate; rust-ci.yml runs cargo clippy/check/test with --locked, which fails without it
+
 | `Cargo.toml`
 | yes
-| -
+| rust-cli archetype: Cargo reads the package manifest from the package root only; this repo is a Rust crate (src/, tests/cli.rs)
 
 | `Justfile`
 | yes
@@ -209,6 +213,7 @@ your own repo - but do not read their emptiness as neglect here.
 
 [cols="1"]
 |===
+| `.machine_readable/ai/`
 | `.machine_readable/bot_directives/`
 | `.machine_readable/descriptiles/anchors/`
 | `.machine_readable/scripts/verification/`
