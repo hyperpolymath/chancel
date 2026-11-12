@@ -33,7 +33,7 @@ checks a Chapel program, gates a Chapel subset, or emits a proof obligation.
 What is planned, and not yet built: a subset gate for Chapel programs and a
 proof-obligation front end over the Canonry theory. The repository deed
 (`chancel_chora.deed`) is the place where its identity, boundaries and
-relationships are recorded; some of its fields are still `UNASSIGNED` and wait
+relationships are recorded; some of its fields are not yet filled in and wait
 for the owner.
 
 == Working in this repository
