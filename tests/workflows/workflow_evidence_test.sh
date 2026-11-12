@@ -23,28 +23,19 @@ extract_step() {
         END { if (!lines) exit 1 }
     ' "$1" > "$3" || fail "cannot find workflow step: $2"
 }
-extract_step "$REPO_DIR/.github/workflows/static-analysis-gate.yml" 'Run panic-attack assail' "$WORK/panic.sh"
+extract_step "$REPO_DIR/.github/workflows/static-analysis-gate.yml" 'Record that the panic-attack assail scan is replaced by panicbot' "$WORK/panic-replaced.sh"
 extract_step "$REPO_DIR/.github/workflows/static-analysis-gate.yml" 'Run pons-asinorum deep recon audit' "$WORK/pons.sh"
 extract_step "$REPO_DIR/.github/workflows/verdict-grid-publish.yml" 'Authenticate source run and identify current pull request' "$WORK/authenticate.sh"
 
 # Exported functions shadow external tools even when the machine happens to
 # have a real scanner installed. Validate argv so changed invocations fail.
-panic-attack() {
-    [[ "$#" == 4 && "$1" == assail && "$2" == . && "$3" == --output ]] || return 99
-    case "$SCANNER_MODE" in
-        missing) return 0 ;;
-        empty) : > "$4" ;;
-        *) cp "$SCANNER_REPORT" "$4" ;;
-    esac
-    return "$SCANNER_EXIT"
-}
 pons() {
     if [[ "$#" == 1 && "$1" == --version ]]; then echo 'synthetic pons'; return 0; fi
     [[ "$#" == 4 && "$1" == scan && "$2" == --format && "$3" == json && "$4" == . ]] || return 99
     cat "$SCANNER_REPORT"
     return "$SCANNER_EXIT"
 }
-export -f panic-attack pons
+export -f pons
 
 # Each execution starts with empty output files and an isolated working tree.
 scanner_case() {
@@ -61,7 +52,6 @@ scanner_case() {
     ) > "$dir/log" 2>&1 || got=$?
     [[ "$got" -eq "$want" ]] || { cat "$dir/log" >&2; fail "$tool/$mode: expected exit $want, got $got"; }
     local file="$dir/pons-findings.json" name=pons-asinorum pin=pons-pin
-    if [[ "$tool" == panic ]]; then file="$dir/panic-attack-findings.json"; name=panic-attack; pin=panic-pin; fi
     jq -e --arg status "$status" --arg tool "$name" --arg pin "$pin" --argjson rc "$scanner_rc" '
         .status == $status and .tool == $tool and .ref == $pin and .exit_code == $rc
         and (if $status == "ran" then .reason == null and (.report | type == "object")
@@ -70,21 +60,22 @@ scanner_case() {
     if [[ "$status" == ran ]]; then
         jq -e --slurpfile raw "$dir/input.json" '.report == $raw[0]' "$file" >/dev/null \
             || fail "$tool/$mode: envelope must preserve the original report"
-    elif [[ "$tool" == panic ]]; then
-        [[ ! -s "$dir/output" ]] || fail "$tool/$mode: failed scanner emitted success counts"
     fi
     echo "PASS: $tool/$mode emits $status and preserves the exit code"
 }
 
-scanner_case panic clean '{"weak_points":[]}' 0 0 ran
-scanner_case panic mixed '{"weak_points":[{"severity":"CRITICAL","suppressed":true},{"severity":"HIGH"},{"severity":"warn"},{"severity":"low"},{"description":"no severity"}]}' 0 0 ran
-printf 'total=4\ncritical=0\nhigh=1\nmedium=1\nlow=1\n' > "$WORK/expected-counts"
-cmp -s "$WORK/expected-counts" "$WORK/panic-mixed/output" || fail 'panic counts must normalize case and exclude suppressed findings'
-scanner_case panic nonzero '{"weak_points":[]}' 7 1 error
-scanner_case panic missing '{}' 0 1 error
-scanner_case panic empty '{}' 0 1 error
-scanner_case panic malformed '{broken' 0 1 error
-scanner_case panic wrong-shape '{"weak_points":{}}' 0 1 error
+# panic-attack assail no longer runs (owner ruling 2026-11-12): the step must emit an
+# explicit not_run envelope, never a ran/clean one, and must not run any scanner.
+mkdir -p "$WORK/panic-replaced/temp"
+(
+    cd "$WORK/panic-replaced"
+    RUNNER_TEMP="$WORK/panic-replaced/temp" GITHUB_STEP_SUMMARY="$WORK/panic-replaced/summary" \
+        PANIC_ATTACK_SHA=panic-pin bash "$WORK/panic-replaced.sh"
+) > "$WORK/panic-replaced.log" 2>&1 || { cat "$WORK/panic-replaced.log" >&2; fail "panic-replaced: step failed"; }
+jq -e '.status == "not_run" and .tool == "panic-attack" and .ref == "panic-pin" and .exit_code == null
+    and .report == null and .reason == "replaced by panicbot (owner ruling 2026-11-12)"' \
+    "$WORK/panic-replaced/panic-attack-findings.json" >/dev/null || fail "panic-replaced: envelope must be an explicit not_run with the panicbot reason"
+echo "PASS: panic-attack assail is replaced by panicbot and emits an explicit not_run envelope"
 
 scanner_case pons clean '{"findings":[]}' 0 0 ran
 scanner_case pons mixed '{"findings":[{"severity":"error","evidence":"SPECULATIVE"},{"severity":"ERROR","evidence":"speculative"},{"severity":"error","evidence":"proven"},{"severity":"ERROR"},{"severity":"warn"},{"severity":"info"}]}' 0 0 ran
