@@ -4,20 +4,20 @@
 
 == Current Status
 
-Initial development phase.
+No code yet. The repository holds the RSR template scaffolding it was minted
+with, and a placeholder crate (`src/lib.rs`, `src/main.rs`, `tests/cli.rs`)
+that only reports the package name and version. Nothing here yet checks a
+Chapel program.
 
-== Milestones
+== Planned work (none of it started)
 
-=== v0.1.0 - Foundation
-* [ ] Core functionality
-* [ ] Basic documentation
-* [ ] CI/CD pipeline
+From the repository description: a subset gate for Chapel programs, and a
+proof-obligation front end over the Canonry theory. No dates, versions or
+acceptance criteria have been set; they wait for the owner.
 
-=== v1.0.0 - Stable Release
-* [ ] Full feature set
-* [ ] Comprehensive tests
-* [ ] Production ready
-
-== Future Directions
-
-_To be determined based on community feedback._
+* [ ] Owner values in `chancel_chora.deed`: `:position-type`, `:purpose`,
+  `:pipeline-position`, `:chain`, the `:not` list and `(unique-strength)`
+  are still `UNASSIGNED`.
+* [ ] `mise.lock` regenerated with `just toolchain-refresh` (needs mise); the
+  rust mint removed the template's lock because it pinned another toolchain.
+* [ ] A first milestone, once the owner defines it.

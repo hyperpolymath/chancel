@@ -5,7 +5,7 @@
 *Standard:* link:https://github.com/hyperpolymath/standards/tree/main/component-readiness-grades[Component Readiness Grades (CRG) v2.0 STRICT] +
 *Assessed:* 2026-11-12 +
 *Assessor:* Jonathan D.A. Jewell +
-*Previous assessment:* _<date or "none">_
+*Previous assessment:* none
 
 *Current Grade:* X
 
