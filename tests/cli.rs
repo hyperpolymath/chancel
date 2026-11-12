@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MPL-2.0
-// SPDX-FileCopyrightText: {{CURRENT_YEAR}} {{AUTHOR}} ({{OWNER}}) <{{AUTHOR_EMAIL}}>
+// SPDX-FileCopyrightText: 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 //!
 //! An integration test, so `cargo test --all-targets` runs something real from
 //! the day the repo is minted. `cargo test` with no tests at all exits 0, and a
 //! green suite that contains no test is the same fake gate as one that is
 //! skipped.
 
-use {{project}}::about;
+use chancel::about;
 
 #[test]
 fn about_is_not_empty() {

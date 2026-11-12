@@ -101,6 +101,10 @@ predecessors did.
 | optional
 | estate docs gate (standards scripts/check-docs-presence.sh) requires CONTRIBUTING at the ROOT; this is the copy it verifies
 
+| `Cargo.toml`
+| yes
+| -
+
 | `Justfile`
 | yes
 | thin; delegates phases to build/just/*.just
@@ -125,10 +129,6 @@ predecessors did.
 | optional
 | community health file; GitHub accepts it at root, docs/ or .github/
 
-| `archetypes/`
-| optional
-| template-only variation seam (ADR-0003); `just repo-init` removes it from minted repos
-
 | `benches/`
 | optional
 | Cargo-conventional at package root
@@ -136,6 +136,10 @@ predecessors did.
 | `build/`
 | yes
 | build orchestration: just/ phase modules, container/, docs-seed/, templates/, guix.scm (canon 1.2.1 guix-primary template_ref = "build/")
+
+| `chancel_chora.deed`
+| yes
+| the repo deed: universal AI entry point; family-7 allocation manifest + ply tree folded in (standards#837 pilot). Filename carries the repo slug (deed dispatch <stem>_chora.deed), so repo-init renames it at mint
 
 | `ci/`
 | yes
@@ -161,17 +165,9 @@ predecessors did.
 | yes
 | --setup/--doctor/--heal/--ai-setup (launcher-standard 0.6.0); the one file a newcomer runs first
 
-| `mise.lock`
-| yes
-| makes "latest" concrete: version + per-platform checksum; mise reads it beside mise.toml
-
 | `mise.toml`
 | yes
 | the toolchain: every tool at "latest" (PROVISIONING-STANDARD §4)
-
-| `rsr-template-repo_chora.deed`
-| yes
-| the repo deed: universal AI entry point; family-7 allocation manifest + ply tree folded in (standards#837 pilot). Filename carries the repo slug (deed dispatch <stem>_chora.deed), so repo-init renames it at mint
 
 | `scripts/`
 | yes
@@ -256,8 +252,6 @@ your own repo - but do not read their emptiness as neglect here.
 | `src/core/`
 | `src/definitions/`
 | `src/errors/`
-| `src/interface/generated/`
-| `src/interface/generated/abi/`
 | `tests/fuzz/`
 | `verification/benchmarks/`
 | `verification/coverage/`
