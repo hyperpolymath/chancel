@@ -4,7 +4,7 @@
 
 == Current Status
 
-No code yet. The repository holds the RSR template scaffolding it was minted
+No Chapel verifier code yet. The repository holds the RSR template scaffolding it was minted
 with, and a placeholder crate (`src/lib.rs`, `src/main.rs`, `tests/cli.rs`)
 that only reports the package name and version. Nothing here yet checks a
 Chapel program.

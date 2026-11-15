@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 // SPDX-FileCopyrightText: 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 //!
-//! Planned verifier for Chapel programs: a subset gate and a proof-obligation front end over the Canonry theory. No code yet.
+//! Planned verifier for Chapel programs: a subset gate and a proof-obligation front end over the Canonry theory. No Chapel verifier code yet; only a placeholder crate.
 //!
 //! The library half of the crate, so the behaviour is testable without spawning
 //! the binary. Keep `main.rs` a thin shell around this.
