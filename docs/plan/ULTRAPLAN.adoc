@@ -1,0 +1,76 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// SPDX-FileCopyrightText: 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+= Chancel: plan to v1.0.0
+:revdate: 2026-11-15
+:toc:
+
+Chancel is the planned verifier front end for Chapel programs: a subset gate
+and a proof-obligation front end over the Canonry theory. Today it is a
+placeholder Rust crate. This is its first plan.
+
+Chancel and `hyperpolymath/canonry` are a pair. Canonry holds the Agda theory.
+Chancel must not define a condition that the theory does not cover. The two
+follow one schedule.
+
+The work that is shared with the sibling verifiers (`atoma`, `quintessence`,
+`Apodeixis.jl`, `bactrian`, `canonry`) is in the family plan,
+`docs/plan/FAMILY-ULTRAPLAN.adoc` in `hyperpolymath/atoma`. IDs F1 to F12 and
+waves W0 to W5 come from that plan.
+
+== Measured state on 2026-11-15
+
+* `cargo test --locked`: 2 passed. `cargo clippy --locked --all-targets -- -D warnings`: clean. `cargo fmt --check`: clean.
+* The crate has one function, `about()`. It has no dependency.
+* No Chapel parsing, no subset gate and no obligation code exist.
+
+== Definition of v1.0.0
+
+The seven family gates apply. The text below is the Chancel reading. The
+first tier is the Canonry first tier: no index out of bounds, no nil
+dereference, no division by zero.
+
+[cols="1,4,3",options="header"]
+|===
+| Gate | Acceptance | Falsifier
+| Language boundary | Closed Chapel subset: 1D strided domains first, then what Canonry M4 covers. Every other construct fails closed with a located diagnostic. | An unsupported construct passes the gate.
+| Source connection | Obligations come from the Chapel compiler's resolved program, not from text patterns. The key binds the Chapel version and the module closure. | A body-only mutant keeps the old evidence.
+| Semantics | Each emitted condition is an instance of a Canonry theorem. The generator relation is stated and checked. | The generator emits a condition outside the theory.
+| Replay | Obligations replay through ECHIDNA. Unknown, timeout and missing evidence fail closed. | UNKNOWN becomes PROVED.
+| Practical coverage | Three pilots: a stencil loop, a strided copy, a reduction. | A second program needs special cases.
+| Assurance | Rust code verified with Creusot (Pearlite contracts) and Verus, with each scope recorded. Mutants killed by gates that ran. | A check that did not run is reported as a pass.
+| Release and estate | Deed identity set. README and changelog true. | The README claims a verifier before the gate exists.
+|===
+
+== Design decisions to make before code
+
+[cols="1,4,2",options="header"]
+|===
+| ID | Decision | Who
+| D1 | How Chancel reads Chapel: the compiler front-end library, a compiler dump, or a parser in Rust. The source connection gate needs resolved types and domains. | Opus proposal, owner ruling
+| D2 | The obligation format. Canonry stage C2 fixes it. Chancel must not fix it alone. | With Canonry
+| D3 | The pinned Chapel version and how CI gets it. ECHIDNA already has an optional Chapel layer; reuse its pin if one exists. | Sonnet, F6
+|===
+
+== Sequence
+
+[cols="1,4,1,1,3",options="header"]
+|===
+| Stage | Work | Lead | Size | Exit evidence
+| CH0 Truth (W0) | Done: wording. Left: deed identity (F2). | Owner; Haiku | S | The README and the deed agree.
+| CH1 Decisions and spine (W1) | D1, D2, D3. Adopt the family kit (F3) and the ECHIDNA client (F7). | Opus, advisor review of D1 | M | A decision record for D1 to D3. The crate writes a receipt with status INCOMPLETE through the kit.
+| CH2 First obligation (W2) | One straight-line Chapel procedure with one array write. Subset gate, obligation, ECHIDNA replay. Depends on Canonry C2. | Opus design; Sonnet implementation | L | The W2 family exit evidence, with the reuse measures.
+| CH3 Loops and domains (W3) | `for` and `forall` over strided domains with the Canonry loop rules. Depends on Canonry C3. Creusot and Verus scopes for the generator. | Opus | L | An out-of-bounds counterexample in a loop is rejected.
+| CH4 Kernel chain (W4) | Receipts, invalidation, the generator relation. Depends on Canonry C4 and C5. | Opus; Sonnet | L | End-to-end replay. Stale evidence fails.
+| CH5 Pilots and release (W5) | Three pilots. Release audit (F12). | Opus for pilots; Sonnet for release | L | All seven gates pass on the release commit.
+|===
+
+Sonnet does the implementation tasks inside each stage from an Opus brief.
+Haiku runs the scout pass before each step. The advisor reviews the close of
+each stage and each change to a status word.
+
+== Stop points
+
+* Do not write the subset gate before D1 has a ruling.
+* If Canonry cannot prove a rule that Chancel needs, remove the construct from
+  the subset. Do not emit an unproved condition.
+* The coprocessor is not wired today (family plan, F10). Do not depend on it.
